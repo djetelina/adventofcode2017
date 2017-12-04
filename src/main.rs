@@ -25,14 +25,7 @@ fn main() {
 
 
 fn day_one(exercise_number: i32) {
-    match exercise_number {
-        1 => captcha(),
-        _ => println!("Exercise not yet implemented")
-    }
-}
-
-fn captcha() {
-    let puzzle_input = "32941994713271959948248321975648598766826\
+    let puzzle_input: String = String::from("32941994713271959948248321975648598766826\
     38188889768298894243832665654681412886862234525991553276578641\
     26558995917841421838932936149667399161467362634455217941399556\
     22668181383723932139661431249144693976925872511126632178628792\
@@ -64,10 +57,18 @@ fn captcha() {
     71884864956845179775192631561757529538196442684362528281952474\
     71197268721935697856119598967761435399152999682763747129964853\
     67853494734376257511273443736433464496287219615697341973131715\
-    166768916149828396454638596713572963686159214116763";
+    166768916149828396454638596713572963686159214116763");
     println!("{}", puzzle_input);
 
-    let mut to_sum: Vec<String> = vec![String::new(); 0];
+    match exercise_number {
+        1 => captcha(puzzle_input),
+        2 => captcha_by_size(puzzle_input),
+        _ => println!("Exercise not yet implemented")
+    }
+}
+
+fn captcha(puzzle_input: String) {
+    let mut to_sum: Vec<String> = vec![];
     let mut previous_number: String = puzzle_input.chars().rev().take(1).collect();
     for number in puzzle_input.chars() {
         let number_str = number.to_string();
@@ -84,6 +85,31 @@ fn captcha() {
 
     let sum: i32 = converted.iter().sum();
     println!("{}", sum);
+}
+
+fn captcha_by_size(puzzle_input: String) {
+    let doubled_input: String = format!("{}{}", puzzle_input, puzzle_input);
+    let look_ahead = puzzle_input.chars().count() / 2;
+    let mut to_sum: Vec<String> = vec![];
+    for (index, number) in puzzle_input.chars().enumerate() {
+        if puzzle_input.chars().nth(index) == doubled_input.chars().nth(index + look_ahead) {
+            to_sum.push(number.to_string().clone())
+        }
+    }
+    println!("{:?}", to_sum);
+
+    let converted: Vec<i32> = to_sum.into_iter().map(|x| str_to_i32(x.clone())).collect();
+    println!("{:?}", converted);
+
+    let sum: i32 = converted.iter().sum();
+    println!("{}", sum);
+
+}
+
+fn day_two(exercise_number: i32) {
+    match exercise_number {
+        _ => println!("This is where my rust journey ended. I gave up.")
+    }
 }
 
 fn str_to_i32(str: String) -> i32 {
